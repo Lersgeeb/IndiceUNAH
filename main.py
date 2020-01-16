@@ -70,13 +70,24 @@ class MainWindowUser(QtWidgets.QMainWindow, Ui_MainWindow):
             self.qTableRefresh()
 
     def qRemove(self):
-        name = self.qGetName("ASIGNATURA")
-        if(name):
-            pos = (self.data[self.data["ASIGNATURA"]==name]).index.values[0] 
-            self.data = self.data.drop([pos], axis=0)
-            
+        selectedItems = self.tableWidget.selectedItems()
+        if(selectedItems):
+            for item in selectedItems:
+                name = item.text()
+
+                pos = (self.data[self.data["ASIGNATURA"]==name]).index.values[0] 
+                self.data = self.data.drop([pos], axis=0)
+                
             self.tableWidget.setRowCount(0)
             self.qTableRefresh()
+        else:
+            name = self.qGetName("ASIGNATURA")
+            if(name):
+                pos = (self.data[self.data["ASIGNATURA"]==name]).index.values[0] 
+                self.data = self.data.drop([pos], axis=0)
+                
+                self.tableWidget.setRowCount(0)
+                self.qTableRefresh()
 
     def qReset(self):
         self.filename = None
